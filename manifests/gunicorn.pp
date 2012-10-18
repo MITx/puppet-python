@@ -14,7 +14,7 @@
 #  Gunicorn mode.
 #  wsgi|django. Default: wsgi
 #
-# [*dir*]
+# [*package_root*]
 #  Application directory.
 #
 # [*bind*]
@@ -28,12 +28,12 @@
 # === Examples
 #
 # python::gunicorn { 'vhost':
-#   ensure      => present,
-#   virtualenv  => '/var/www/project1',
-#   mode        => 'wsgi',
-#   dir         => '/var/www/project1/current',
-#   bind        => 'unix:/tmp/gunicorn.socket',
-#   environment => 'prod',
+#   ensure                    => present,
+#   virtualenv                => '/var/www/project1',
+#   mode                      => 'wsgi',
+#   package_root              => '/var/www/project1/current',
+#   bind                      => 'unix:/tmp/gunicorn.socket',
+#   environment               => 'prod',
 # }
 #
 # === Authors
@@ -45,7 +45,6 @@ define python::gunicorn (
   $ensure             = present,
   $virtualenv         = false,
   $mode               = 'wsgi',
-  $dir                = false,
   $bind               = false,
   $environment        = false,
   $settings_module    = undef,
@@ -61,11 +60,6 @@ define python::gunicorn (
 
   class { 'python::gunicorn::install':
     virtualenv => $virtualenv,
-  }
-
-  # Parameter validation
-  if ! $dir {
-    fail('python::gunicorn: dir parameter must not be empty')
   }
 
   file { "/etc/init/${name}.conf":
