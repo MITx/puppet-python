@@ -34,6 +34,6 @@ setuid makeitso
 exec $NEWRELIC run-program <%= scope.lookupvar('virtualenv') %>/bin/gunicorn_django -b 127.0.0.1:$PORT -w $WORKERS --timeout=<%= scope.lookupvar('timeout') %> --pythonpath=<%= scope.lookupvar('package_root') %> --settings=<%= scope.lookupvar('settings_module') %>
 <% when 'wsgi' %>
 
-  exec $NEWRELIC run-program <%= scope.lookupvar('virtualenv') %>/gunicorn --preload -b 127.0.0.1:$PORT -w $WORKERS --timeout=<%= scope.lookupvar('timeout') %> --pythonpath=<%= scope.lookupvar('package_root') %> <%= scope.lookupvar('wsgi_app') %>
+  exec $NEWRELIC run-program <%= scope.lookupvar('virtualenv') %>/bin/gunicorn --preload -b 127.0.0.1:$PORT -w $WORKERS --timeout=<%= scope.lookupvar('timeout') %> --pythonpath=<%= scope.lookupvar('package_root') %> <%= scope.lookupvar('wsgi_app') %>
 
 <% end %>
