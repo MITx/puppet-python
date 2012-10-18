@@ -59,17 +59,13 @@ define python::gunicorn (
   $upstart_template   = template('python/gunicorn/gunicorn.erb'),
 ) {
 
+  class { 'python::gunicorn::install':
+    virtualenv => $virtualenv,
+  }
+
   # Parameter validation
   if ! $dir {
     fail('python::gunicorn: dir parameter must not be empty')
-  }
-
-  file { "/etc/gunicorn.d/${name}":
-    ensure  => $ensure,
-    mode    => '0644',
-    owner   => 'root',
-    group   => 'root',
-    content => $upstart_template,
   }
 
   file { "/etc/init/${name}.conf":
@@ -77,7 +73,7 @@ define python::gunicorn (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    require => Class['python::install'],
+    require => Class['python::gunicorn::install'],
     notify  => Service[$name],
     content => $upstart_template,
   }

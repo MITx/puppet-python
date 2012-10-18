@@ -12,14 +12,14 @@ respawn limit 3 30
 env PID=/var/run/gunicorn/<%= name %>.pid
 env NEW_RELIC_CONFIG_FILE=/opt/wwc/newrelic.ini
 env NEWRELIC=/usr/local/bin/newrelic-admin
-<% if @workers -%>
-env WORKERS=<%= @workers %>
+<% if scope.lookupvar('workers') -%>
+env WORKERS=<%= scope.lookupvar('workers') %>
 <% else -%>
-env WORKERS=<%= 4 * @processorcount.to_i %>
+env WORKERS=<%= 4 * scope.lookupvar('::processorcount').to_i %>
 <% end -%>
-env PORT=<%= @port %>
+env PORT=<%= scope.lookupvar('port') %>
 env LANG=en_US.UTF-8
-env DJANGO_SETTINGS_MODULE=<%= @settings_module %>
+env DJANGO_SETTINGS_MODULE=<%= scope.lookupvar('settings_module') %>
 
 pre-start script
 <% pre_start_commands.each do |cmd| -%>
@@ -27,15 +27,13 @@ pre-start script
 <% end -%>
 end script
 
-chdir <%= @package_root %>
+chdir <%= scope.lookupvar('package_root') %>
 setuid makeitso
 
-<% case app_interface
-    when 'django' %>
-
-exec $NEWRELIC run-program /usr/local/bin/gunicorn_django -b 127.0.0.1:$PORT -w $WORKERS --timeout=<%= @timeout %> --pythonpath=<%= @package_root %> --settings=<%= @settings_module %>
+<% case scope.lookupvar('app_interface') when 'django' %>
+exec $NEWRELIC run-program <%= scope.lookupvar('virtualenv') %>/bin/gunicorn_django -b 127.0.0.1:$PORT -w $WORKERS --timeout=<%= scope.lookupvar('timeout') %> --pythonpath=<%= scope.lookupvar('package_root') %> --settings=<%= scope.lookupvar('settings_module') %>
 <% when 'wsgi' %>
 
-exec $NEWRELIC run-program /usr/local/bin/gunicorn --preload -b 127.0.0.1:$PORT -w $WORKERS --timeout=<%= @timeout %> --pythonpath=<%= @package_root %> <%= @wsgi_app %>
+  exec $NEWRELIC run-program <%= scope.lookupvar('virtualenv') %>/gunicorn --preload -b 127.0.0.1:$PORT -w $WORKERS --timeout=<%= scope.lookupvar('timeout') %> --pythonpath=<%= scope.lookupvar('package_root') %> <%= scope.lookupvar('wsgi_app') %>
 
 <% end %>
