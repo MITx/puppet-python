@@ -61,7 +61,7 @@ define python::requirements (
     command     => "${pip_env} install ${proxy_flag} -Ur ${requirements}",
     cwd         => $virtualenv,
     refreshonly => true,
-    timeout     => 1800,
+    timeout     => 3600,
     subscribe   => Exec["python_requirements_check_${name}"],
   }
 
