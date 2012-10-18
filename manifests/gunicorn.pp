@@ -41,12 +41,22 @@
 # Sergey Stankevich
 #
 define python::gunicorn (
-  $ensure      = present,
-  $virtualenv  = false,
-  $mode        = 'wsgi',
-  $dir         = false,
-  $bind        = false,
-  $environment = false
+  $reporting,
+  $ensure             = present,
+  $virtualenv         = false,
+  $mode               = 'wsgi',
+  $dir                = false,
+  $bind               = false,
+  $environment        = false,
+  $settings_module    = undef,
+  $port               = '8000',
+  $pre_start_commands = [],
+  $package_root       = '/opt/wwc/mitx',
+  $app_interface      = 'django',
+  $wsgi_app           = undef,
+  $timeout            = '30',
+  $workers            = undef,
+  $upstart_template   = template('python/gunicorn/gunicorn.erb'),
 ) {
 
   # Parameter validation
@@ -59,7 +69,24 @@ define python::gunicorn (
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
-    content => template('python/gunicorn.erb'),
+    content => $upstart_template,
+  }
+
+  file { "/etc/init/${name}.conf":
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    require => Class['python::install'],
+    notify  => Service[$name],
+    content => $upstart_template,
+  }
+
+  service { $name:
+    ensure   => running,
+    provider => 'upstart',
+    require  => File["/etc/init/${name}.conf"],
+    tag      => release
   }
 
 }
