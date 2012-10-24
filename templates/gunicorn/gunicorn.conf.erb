@@ -10,7 +10,7 @@ respawn
 respawn limit 3 30
 
 env PID=/var/run/gunicorn/<%= name %>.pid
-env NEW_RELIC_CONFIG_FILE=/opt/wwc/newrelic.ini
+env NEW_RELIC_CONFIG_FILE=<%= scope.lookupvar('package_root') %>/newrelic.ini
 env NEWRELIC=<%= scope.lookupvar('virtualenv') %>/bin/newrelic-admin
 <%= if scope.lookupvar('workers') -%>
 env WORKERS=<%= scope.lookupvar('workers') %>
@@ -28,7 +28,7 @@ pre-start script
 end script
 
 chdir <%= scope.lookupvar('package_root') %>
-setuid makeitso
+setuid <%= scope.lookupvar('user') %>
 
 <%= case scope.lookupvar('app_interface') when 'django' %>
 exec $NEWRELIC run-program <%= scope.lookupvar('virtualenv') %>/bin/gunicorn_django -b 127.0.0.1:$PORT -w $WORKERS --timeout=<%= scope.lookupvar('timeout') %> --pythonpath=<%= scope.lookupvar('package_root') %> --settings=<%= scope.lookupvar('settings_module') %>
