@@ -42,21 +42,22 @@
 #
 define python::gunicorn (
   $reporting,
-  $ensure             = present,
-  $virtualenv         = false,
-  $mode               = 'wsgi',
+  $app_interface      = 'django',
+  $base               = '/opt/wwc',
   $bind               = false,
+  $ensure             = present,
   $environment        = false,
-  $settings_module    = undef,
+  $mode               = 'wsgi',
+  $package_root       = '/opt/wwc/mitx',
   $port               = '8000',
   $pre_start_commands = [],
-  $package_root       = '/opt/wwc/mitx',
-  $app_interface      = 'django',
-  $wsgi_app           = undef,
+  $settings_module    = undef,
   $timeout            = '30',
-  $workers            = undef,
-  $user               = 'www-data',
   $upstart_template   = template('python/gunicorn/gunicorn.conf.erb'),
+  $user               = 'www-data',
+  $virtualenv         = false,
+  $workers            = undef,
+  $wsgi_app           = undef,
 ) {
 
   class { 'python::gunicorn::install':
