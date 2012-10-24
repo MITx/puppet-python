@@ -55,6 +55,7 @@ define python::gunicorn (
   $wsgi_app           = undef,
   $timeout            = '30',
   $workers            = undef,
+  $user               = 'www-data',
   $upstart_template   = template('python/gunicorn/gunicorn.conf.erb'),
 ) {
 
