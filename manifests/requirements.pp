@@ -29,7 +29,7 @@ define python::requirements (
   $requirements = $name
 
   $pip_env = $virtualenv ? {
-    'system' => '`which pip`',
+    'system' => '`/bin/which pip`',
     default  => "${virtualenv}/bin/pip",
   }
 
