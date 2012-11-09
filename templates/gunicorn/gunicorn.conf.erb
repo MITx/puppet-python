@@ -7,7 +7,9 @@ start on runlevel [2345]
 stop on runlevel [!2345]
 
 respawn
+<% if scope.lookupvar('respawn_limit') %> -%>
 respawn limit 3 30
+<% end -%>
 
 env PID=/var/run/gunicorn/<%= name %>.pid
 env NEW_RELIC_CONFIG_FILE=<%= scope.lookupvar('base') %>/newrelic.ini
@@ -34,5 +36,6 @@ setuid <%= scope.lookupvar('user') %>
 exec $NEWRELIC run-program <%= scope.lookupvar('virtualenv') %>/bin/gunicorn_django -b 127.0.0.1:$PORT -w $WORKERS --timeout=<%= scope.lookupvar('timeout') %> --pythonpath=<%= scope.lookupvar('package_root') %> --settings=<%= scope.lookupvar('settings_module') %>
 <% when 'wsgi' -%>
 exec $NEWRELIC run-program <%= scope.lookupvar('virtualenv') %>/bin/gunicorn --preload -b 127.0.0.1:$PORT -w $WORKERS --timeout=<%= scope.lookupvar('timeout') %> --pythonpath=<%= scope.lookupvar('package_root') %> <%= scope.lookupvar('wsgi_app') %>
-
+<% when 'python' -%>
+exec python <%= scope.lookupvar('package_root') %>/<%= scope.lookupvar('script_name') %>
 <% end -%>
