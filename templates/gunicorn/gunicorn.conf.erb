@@ -7,7 +7,7 @@ start on runlevel [2345]
 stop on runlevel [!2345]
 
 respawn
-<% if scope.lookupvar('respawn_limit') != false %> -%>
+<% if scope.lookupvar('respawn_limit') != false -%>
 respawn limit 3 30
 <% end -%>
 
