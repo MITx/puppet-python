@@ -51,6 +51,7 @@ define python::gunicorn (
   $package_root       = '/opt/wwc/mitx',
   $port               = '8000',
   $pre_start_commands = [],
+  $respawn_limit      = false,
   $settings_module    = undef,
   $timeout            = '30',
   $upstart_template   = template('python/gunicorn/gunicorn.conf.erb'),
