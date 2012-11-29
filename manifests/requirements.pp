@@ -23,7 +23,7 @@
 #
 define python::requirements (
   $virtualenv = 'system',
-  $proxy      = false
+  $proxy      = false,
   $owner      = 'www-data',
   $group      = 'www-data',
 ) {
