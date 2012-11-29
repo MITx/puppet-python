@@ -24,6 +24,8 @@
 define python::requirements (
   $virtualenv = 'system',
   $proxy      = false
+  $owner      = 'www-data',
+  $group      = 'www-data',
 ) {
 
   $requirements = $name
@@ -44,8 +46,8 @@ define python::requirements (
   file { $requirements:
     ensure  => present,
     mode    => '0644',
-    owner   => 'root',
-    group   => 'root',
+    owner   => $owner,
+    group   => $group,
     replace => false,
     content => '# Puppet will install and/or update pip packages listed here',
   }
