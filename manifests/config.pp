@@ -7,18 +7,4 @@ class python::config {
   Python::Virtualenv <| |> -> Python::Pip <| |>
   Python::Virtualenv <| |> -> Python::Requirements <| |>
 
-  if $python::gunicorn {
-    Class['python::install'] -> Python::Gunicorn <| |>
-
-    Python::Gunicorn <| |> ~> Service['gunicorn']
-
-    service { 'gunicorn':
-      ensure     => running,
-      enable     => true,
-      hasrestart => true,
-      hasstatus  => false,
-      pattern    => '/usr/bin/gunicorn',
-    }
-  }
-
 }

@@ -21,11 +21,4 @@ class python::install {
 
   package { 'python-virtualenv': ensure => $venv_ensure }
 
-  $gunicorn_ensure = $python::gunicorn ? {
-    true    => present,
-    default => absent,
-  }
-
-  package { 'gunicorn': ensure => $gunicorn_ensure }
-
 }

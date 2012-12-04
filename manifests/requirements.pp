@@ -23,13 +23,15 @@
 #
 define python::requirements (
   $virtualenv = 'system',
-  $proxy      = false
+  $proxy      = false,
+  $owner      = 'www-data',
+  $group      = 'www-data',
 ) {
 
   $requirements = $name
 
   $pip_env = $virtualenv ? {
-    'system' => '`which pip`',
+    'system' => '`/bin/which pip`',
     default  => "${virtualenv}/bin/pip",
   }
 
@@ -44,8 +46,8 @@ define python::requirements (
   file { $requirements:
     ensure  => present,
     mode    => '0644',
-    owner   => 'root',
-    group   => 'root',
+    owner   => $owner,
+    group   => $group,
     replace => false,
     content => '# Puppet will install and/or update pip packages listed here',
   }
@@ -59,9 +61,9 @@ define python::requirements (
 
   exec { "python_requirements_update_${name}":
     command     => "${pip_env} install ${proxy_flag} -Ur ${requirements}",
-    cwd         => $virtualenv,
+    cwd         => $req_dir,
     refreshonly => true,
-    timeout     => 1800,
+    timeout     => 3600,
     subscribe   => Exec["python_requirements_check_${name}"],
   }
 

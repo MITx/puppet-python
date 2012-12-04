@@ -14,7 +14,7 @@
 #  Gunicorn mode.
 #  wsgi|django. Default: wsgi
 #
-# [*dir*]
+# [*package_root*]
 #  Application directory.
 #
 # [*bind*]
@@ -28,12 +28,12 @@
 # === Examples
 #
 # python::gunicorn { 'vhost':
-#   ensure      => present,
-#   virtualenv  => '/var/www/project1',
-#   mode        => 'wsgi',
-#   dir         => '/var/www/project1/current',
-#   bind        => 'unix:/tmp/gunicorn.socket',
-#   environment => 'prod',
+#   ensure                    => present,
+#   virtualenv                => '/var/www/project1',
+#   mode                      => 'wsgi',
+#   package_root              => '/var/www/project1/current',
+#   bind                      => 'unix:/tmp/gunicorn.socket',
+#   environment               => 'prod',
 # }
 #
 # === Authors
@@ -41,26 +41,46 @@
 # Sergey Stankevich
 #
 define python::gunicorn (
-  $ensure        = present,
-  $virtualenv    = false,
-  $mode          = 'wsgi',
-  $dir           = false,
-  $bind          = false,
-  $app_interface = 'wsgi',
-  $environment   = false,
+  $reporting,
+  $app_interface      = 'django',
+  $base               = '/opt/wwc',
+  $bind               = false,
+  $ensure             = present,
+  $environment        = false,
+  $mode               = 'wsgi',
+  $package_root       = '/opt/wwc/mitx',
+  $port               = '8000',
+  $pre_start_commands = [],
+  $respawn_limit      = false,
+  $script_name        = '',
+  $settings_module    = undef,
+  $timeout            = '30',
+  $upstart_template   = template('python/gunicorn/gunicorn.conf.erb'),
+  $user               = 'www-data',
+  $virtualenv         = false,
+  $workers            = undef,
+  $wsgi_app           = undef,
 ) {
 
-  # Parameter validation
-  if ! $dir {
-    fail('python::gunicorn: dir parameter must not be empty')
+  class { 'python::gunicorn::install':
+    virtualenv => $virtualenv,
   }
 
-  file { "/etc/gunicorn.d/${name}":
-    ensure  => $ensure,
-    mode    => '0644',
+  file { "/etc/init/${name}.conf":
+    ensure  => file,
     owner   => 'root',
     group   => 'root',
-    content => template('python/gunicorn.erb'),
+    mode    => '0644',
+    require => Class['python::gunicorn::install'],
+    notify  => Service[$name],
+    content => $upstart_template,
+  }
+
+  service { $name:
+    ensure   => running,
+    provider => 'upstart',
+    require  => File["/etc/init/${name}.conf"],
+    tag      => release
   }
 
 }
