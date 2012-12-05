@@ -53,7 +53,7 @@ define python::gunicorn (
   $pre_start_commands = [],
   $respawn_limit      = false,
   $script_name        = '',
-  $service_enabled    = 'present',
+  $service_enabled    = 'running',
   $settings_module    = undef,
   $timeout            = '30',
   $upstart_template   = template('python/gunicorn/gunicorn.conf.erb'),
