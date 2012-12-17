@@ -30,7 +30,9 @@ pre-start script
 end script
 
 chdir <%= scope.lookupvar('package_root') %>
+<% if scope.lookupvar('app_interface') == 'python' -%>
 setuid <%= scope.lookupvar('user') %>
+<% end -%>
 
 <% case scope.lookupvar('app_interface') when 'django' -%>
 exec <% if scope.lookupvar('reporting') == true -%>$NEWRELIC run-program <% end -%><%= scope.lookupvar('virtualenv') %>/bin/gunicorn_django -b 127.0.0.1:$PORT -w $WORKERS --timeout=<%= scope.lookupvar('timeout') %> --pythonpath=<%= scope.lookupvar('package_root') %> --settings=<%= scope.lookupvar('settings_module') %>
