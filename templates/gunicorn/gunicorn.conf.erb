@@ -37,5 +37,5 @@ exec <% if scope.lookupvar('reporting') == true -%>$NEWRELIC run-program <% end 
 <% when 'wsgi' -%>
 exec <% if scope.lookupvar('reporting') == true -%>$NEWRELIC run-program <% end -%><%= scope.lookupvar('virtualenv') %>/bin/gunicorn --preload -b 127.0.0.1:$PORT -w $WORKERS --timeout=<%= scope.lookupvar('timeout') %> --pythonpath=<%= scope.lookupvar('package_root') %> <%= scope.lookupvar('wsgi_app') %>
 <% when 'python' -%>
-  exec <%= scope.lookupvar('virtualenv') %>/bin/python <%= scope.lookupvar('package_root') %>/<%= scope.lookupvar('script_name') %> >/dev/null 2>&1
+exec su - www-data -c '<%= scope.lookupvar('virtualenv') %>/bin/python <%= scope.lookupvar('package_root') %>/<%= scope.lookupvar('script_name') %> >/dev/null 2>&1'
 <% end -%>
