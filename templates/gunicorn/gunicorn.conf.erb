@@ -30,7 +30,7 @@ pre-start script
 end script
 
 chdir <%= scope.lookupvar('package_root') %>
-<% if scope.lookupvar('app_interface') == 'python' -%>
+<% if scope.lookupvar('app_interface') != 'python' -%>
 setuid <%= scope.lookupvar('user') %>
 <% end -%>
 
