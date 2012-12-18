@@ -60,7 +60,7 @@ define python::requirements (
   }
 
   exec { "python_requirements_update_${name}":
-    command     => "${pip_env} install ${proxy_flag} -Ur ${requirements}",
+    command     => "${pip_env} install ${proxy_flag} -r ${requirements}",
     cwd         => $req_dir,
     refreshonly => true,
     timeout     => 3600,
