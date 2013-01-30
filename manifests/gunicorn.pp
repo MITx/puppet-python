@@ -70,9 +70,9 @@ define python::gunicorn (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    require => Class['python::gunicorn::install'],
     notify  => Service[$name],
     content => $upstart_template,
+    require => Python::Pip['gunicorn'],
   }
 
   service { $name:
