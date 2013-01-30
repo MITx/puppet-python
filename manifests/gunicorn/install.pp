@@ -1,5 +1,5 @@
 class python::gunicorn::install(
-  $virtualenv,
+  $virtualenv = $python::gunicorn::virtualenv,
 ) {
 
   python::pip { 'gunicorn':
