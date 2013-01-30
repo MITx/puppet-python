@@ -63,7 +63,6 @@ define python::gunicorn (
   $wsgi_app           = undef,
 ) {
 
-  include 'python::gunicorn::install'
   include 'edx::newrelic'
 
   file { "/etc/init/${name}.conf":
@@ -82,6 +81,11 @@ define python::gunicorn (
     require   => File["/etc/init/${name}.conf"],
     tag       => release,
     subscribe => Class['edx::newrelic'],
+  }
+
+  python::pip { 'gunicorn':
+    ensure     => present,
+    virtualenv => $virtualenv,
   }
 
 }
