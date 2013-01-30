@@ -64,8 +64,6 @@ define python::gunicorn (
 ) {
 
   include 'edx::newrelic'
-  # Check if newrelic is needed.
-  $reporting = hiera('newrelic', false)
 
   file { "/etc/init/${name}.conf":
     ensure  => file,
