@@ -47,4 +47,15 @@ class python (
   include python::install
   include python::config
 
+  # Move this to here so it gets installed a single time in the virtualenv.  If
+  # we ever want to split into multiple venvs then this will move back to
+  # gunicorn.pp and we'll enhance python::pip to take arguments so the name
+  # can be unique and not cause clashes with multiple instances of the lms
+  # define.
+  python::pip { 'gunicorn':
+    ensure     => present,
+    virtualenv => $virtualenv,
+    require    => Class['python::config'],
+  }
+
 }

@@ -83,9 +83,4 @@ define python::gunicorn (
     subscribe => Class['edx::newrelic'],
   }
 
-  python::pip { 'gunicorn':
-    ensure     => present,
-    virtualenv => $virtualenv,
-  }
-
 }
