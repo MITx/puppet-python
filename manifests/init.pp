@@ -33,6 +33,7 @@ class python (
   $version    = 'system',
   $dev        = false,
   $virtualenv = false,
+  $virtualenv_location = '/opt/edx',
   $gunicorn   = false
 ) {
 
@@ -52,7 +53,6 @@ class python (
   # gunicorn.pp and we'll enhance python::pip to take arguments so the name
   # can be unique and not cause clashes with multiple instances of the lms
   # define.
-  $virtualenv_location = hiera(virtualenv_location, '/opt/edx')
   python::pip { 'gunicorn':
     ensure     => present,
     virtualenv => $virtualenv_location,
