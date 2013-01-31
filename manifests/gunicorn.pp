@@ -64,6 +64,7 @@ define python::gunicorn (
 ) {
 
   include 'edx::newrelic'
+  include '::python'
 
   file { "/etc/init/${name}.conf":
     ensure  => file,
