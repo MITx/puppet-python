@@ -22,7 +22,7 @@ env WORKERS=<%= 4 * scope.lookupvar('::processorcount').to_i %>
 env PORT=<%= scope.lookupvar('port') %>
 env LANG=en_US.UTF-8
 env DJANGO_SETTINGS_MODULE=<%= scope.lookupvar('settings_module') %>
-env SERVICE_VARIANT=${UPSTART_JOB}
+env SERVICE_VARIANT="<%= scope.lookupvar('title') %>"
 
 pre-start script
 <% pre_start_commands.each do |cmd| -%>
