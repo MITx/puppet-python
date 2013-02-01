@@ -11,7 +11,7 @@ respawn
 respawn limit 3 30
 <% end -%>
 
-env PID=/var/run/gunicorn/<%= name %>.pid
+env PID=/var/run/<%= name %>.pid
 env NEW_RELIC_CONFIG_FILE=<%= scope.lookupvar('base') %>/newrelic.ini
 env NEWRELIC=<%= scope.lookupvar('virtualenv') %>/bin/newrelic-admin
 <% if scope.lookupvar('workers') -%>
