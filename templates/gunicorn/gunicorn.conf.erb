@@ -3,7 +3,7 @@
 description "gunicorn server"
 author "Calen Pennington <cpennington@mitx.mit.edu>"
 
-<% if scope.lookupvar(edxapp) == false %>
+<% if scope.lookupvar(edxapp) == false -%>
 start on runlevel [2345]
 stop on runlevel [!2345]
 <% else -%>
