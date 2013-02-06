@@ -3,8 +3,13 @@
 description "gunicorn server"
 author "Calen Pennington <cpennington@mitx.mit.edu>"
 
+<% if scope.lookupvar(edxapp) == false %>
 start on runlevel [2345]
 stop on runlevel [!2345]
+<% else -%>
+start on started edxapp 
+stop on stopped edxapp 
+<% end -%>
 
 respawn
 <% if scope.lookupvar('respawn_limit') != false -%>
@@ -22,6 +27,7 @@ env WORKERS=<%= 4 * scope.lookupvar('::processorcount').to_i %>
 env PORT=<%= scope.lookupvar('port') %>
 env LANG=en_US.UTF-8
 env DJANGO_SETTINGS_MODULE=<%= scope.lookupvar('settings_module') %>
+env SERVICE_VARIANT="<%= scope.lookupvar('title') %>"
 
 pre-start script
 <% pre_start_commands.each do |cmd| -%>

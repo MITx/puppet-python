@@ -61,6 +61,7 @@ define python::gunicorn (
   $virtualenv         = false,
   $workers            = undef,
   $wsgi_app           = undef,
+  $edxapp             = false,
 ) {
 
   include 'edx::newrelic'
