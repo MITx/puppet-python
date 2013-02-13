@@ -29,10 +29,11 @@ env LANG=en_US.UTF-8
 env DJANGO_SETTINGS_MODULE=<%= scope.lookupvar('settings_module') %>
 env SERVICE_VARIANT="<%= scope.lookupvar('title') %>"
 
-<% if scope.lookupvar('stacked') == false -%>
+<% if pre_start_commands.length > 0 -%>
 pre-start script
-  find ${package_root} -user ${user} -type f -name '*.pyc' -delete || true
-  find /tmp -user ${user} -type d -name tmp*mako -exec rm -rf {} \\; || true
+<% pre_start_commands.each do |command| -%>
+  <%= command %>
+<% end -%>
 end script
 <% end -%>
 
