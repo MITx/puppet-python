@@ -41,7 +41,7 @@
 # Sergey Stankevich
 #
 define python::gunicorn (
-  $reporting,
+  $reporting          = false,
   $app_interface      = 'django',
   $base               = '/opt/wwc',
   $bind               = false,
