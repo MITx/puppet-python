@@ -49,7 +49,10 @@ exec <% if scope.lookupvar('edx::newrelic::reporting') == true -%>$NEWRELIC run-
 exec su - www-data -c '<%= scope.lookupvar('virtualenv') %>/bin/python <%= scope.lookupvar('package_root') %>/<%= scope.lookupvar('script_name') %> >/dev/null 1>&1'
 <% end -%>
 
-<% if (scope.lookupvar('stacked') == true) && (scope.lookupvar('title') != 'cms') -%>
+##
+## cms needs a heartbeat
+##
+<% if (scope.lookupvar('title') != 'cms') -%>
 post-start script
   while true
   do
