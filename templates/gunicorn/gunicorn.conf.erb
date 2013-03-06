@@ -52,7 +52,7 @@ exec su - www-data -c '<%= scope.lookupvar('virtualenv') %>/bin/python <%= scope
 ##
 ## cms needs a heartbeat
 ##
-<% if (scope.lookupvar('title') != 'cms') -%>
+<% if (scope.lookupvar('title') == 'lms-xml') || (scope.lookupvar('title') == 'lms') || (scope.lookupvar('title') == 'lms-preview') -%>
 post-start script
   while true
   do
