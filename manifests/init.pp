@@ -38,7 +38,7 @@ class python (
 ) {
 
   # Module compatibility check
-  $compatible = [ 'Debian', 'Ubuntu' ]
+  $compatible = [ 'Debian', 'Ubuntu', 'Amazon' ]
   if ! ($::operatingsystem in $compatible) {
     fail("Module is not compatible with ${::operatingsystem}")
   }
