@@ -30,10 +30,11 @@
 # Sergey Stankevich
 #
 define python::virtualenv (
-  $ensure       = present,
-  $version      = 'system',
-  $requirements = false,
-  $proxy        = false
+  $ensure             = present,
+  $version            = 'system',
+  $requirements       = false,
+  $proxy              = false,
+  $distribute_version = '0.6.49'
 ) {
 
   $venv_dir = $name
@@ -59,7 +60,7 @@ define python::virtualenv (
       command => "mkdir -p ${venv_dir} \
         ${proxy_command} \
         && virtualenv -p `/bin/which ${python}` ${venv_dir} --distribute \
-        && ${venv_dir}/bin/pip install ${proxy_flag} --upgrade pip distribute",
+        && ${venv_dir}/bin/pip install ${proxy_flag} --upgrade pip distribute==${distribute_version}",
       creates => $venv_dir,
     }
 
