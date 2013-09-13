@@ -7,7 +7,9 @@ author "Calen Pennington <cpennington@mitx.mit.edu>"
 start on runlevel [2345]
 stop on runlevel [!2345]
 <% else -%>
+<% if scope.lookupvar('title') != 'lms-xml' -%>
 start on started edxapp 
+<% end -%>
 stop on stopped edxapp 
 <% end -%>
 
