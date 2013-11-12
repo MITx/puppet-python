@@ -57,6 +57,7 @@ define python::gunicorn (
   $settings_module    = undef,
   $timeout            = '30',
   $upstart_template   = template('python/gunicorn/gunicorn.conf.erb'),
+  $max_requests       = 0,
   $user               = 'www-data',
   $virtualenv         = false,
   $workers            = undef,
