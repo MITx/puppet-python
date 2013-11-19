@@ -31,13 +31,6 @@ env LANG=en_US.UTF-8
 env DJANGO_SETTINGS_MODULE=<%= scope.lookupvar('settings_module') %>
 env SERVICE_VARIANT="<%= scope.lookupvar('title') %>"
 
-<% if scope.lookupvar('stacked') == false -%>
-pre-start script
-  find ${package_root} -user ${user} -type f -name '*.pyc' -delete || true
-  find /tmp -user ${user} -type d -name tmp*mako -exec rm -rf {} \\; || true
-end script
-<% end -%>
-
 chdir <%= scope.lookupvar('package_root') %>
 <% if scope.lookupvar('app_interface') != 'python' -%>
 setuid <%= scope.lookupvar('user') %>
